@@ -5,7 +5,7 @@ require("dotenv").config();
 const SendEmail = (to, subject, body) => {
   const config = {
     mailserver: {
-      host: "smtp.ethereal.email",
+      host: "smtp.mailtrap.io",
       port: process.env.EMAIL_PORT,
       secure: false,
       auth: {
@@ -27,7 +27,7 @@ const SendEmail = (to, subject, body) => {
     // send mail using transporter
     let info = await transporter.sendMail(mail);
 
-    console.log(`Preview: ${nodemailer.getTestMessageUrl(info)}`);
+    console.log("Email was sent");
   };
 
   return sendMail(config).catch(console.error);
