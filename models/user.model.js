@@ -21,7 +21,6 @@ const userSchema = new Schema(
     phone: {
       type: Number,
       required: true,
-      unique: true,
       trim: true,
       minlength: 3,
     },

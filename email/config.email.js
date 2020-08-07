@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 
 require("dotenv").config();
 
-const mailConfig = (to, subjct, body) => {
+const SendEmail = (to, subject, body) => {
   const config = {
     mailserver: {
       host: "smtp.ethereal.email",
@@ -16,7 +16,7 @@ const mailConfig = (to, subjct, body) => {
     mail: {
       from: process.env.EMAIL_PASSWORD,
       to: to,
-      subject: subjct,
+      subject: subject,
       text: body,
     },
   };
@@ -30,7 +30,7 @@ const mailConfig = (to, subjct, body) => {
     console.log(`Preview: ${nodemailer.getTestMessageUrl(info)}`);
   };
 
-  sendMail(config).catch(console.error);
+  return sendMail(config).catch(console.error);
 };
 
-module.exports = mailConfig;
+exports.SendEmail = SendEmail;
