@@ -17,7 +17,7 @@ const SendEmail = (to, subject, body) => {
       from: process.env.EMAIL_PASSWORD,
       to: to,
       subject: subject,
-      text: body,
+      html: body,
     },
   };
   const sendMail = async ({ mailserver, mail }) => {
