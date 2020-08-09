@@ -4,26 +4,32 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: true,
+      minlength: 5,
+    },
     username: {
       type: String,
       required: true,
-      unique: true,
-      trim: true,
-      minlength: 3,
+      minlength: 5,
     },
     email: {
       type: String,
       required: true,
-      unique: true,
-      trim: true,
-      minlength: 3,
+      minlength: 5,
     },
-    phone: {
-      type: Number,
+    password: {
+      type: String,
       required: true,
-      trim: true,
-      minlength: 3,
+      minlength: 5,
     },
+    role: {
+      type: String,
+      default: "basic",
+      enum: ["basic", "supervisor", "admin"],
+    },
+    accessToken: String,
   },
   {
     timestamps: true,

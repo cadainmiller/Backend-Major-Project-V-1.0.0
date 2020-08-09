@@ -1,31 +1,35 @@
-const router = require("express").Router();
-let User = require("../models/user.model");
-const Email = require("../email/config.email.js");
+const express = require("express");
+const router = express.Router();
+const userController = require("../controllers/userController");
 
-email_body = router.route("/").get((req, res) => {
-  User.find()
-    .then((users) => res.json(users))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
+router.post("/signup", userController.signup);
 
-router.route("/add").post((req, res) => {
-  const username = req.body.username;
-  const email = req.body.email;
-  const phone = req.body.phone;
+router.post("/login", userController.login);
 
-  const newUser = new User({ username, email, phone });
-  newUser
-    .save()
-    .then(() => res.json("User added!"))
-    .catch((err) => res.status(400).json("Error: " + err));
+router.get(
+  "/user/:userId",
+  userController.allowIfLoggedin,
+  userController.getUser
+);
 
-  Email.SendEmail(
-    email,
-    "WELCOME!!",
-    "<p>Hey " +
-      username +
-      "</p><P>Welcome to TEST COMPANY.You can sign from the link below</P><p><a target='_blank' href='/localhost:3000/'>Click Me</a></p>"
-  );
-});
+router.get(
+  "/users",
+  userController.allowIfLoggedin,
+  userController.grantAccess("readAny", "profile"),
+  userController.getUsers
+);
 
+router.put(
+  "/user/:userId",
+  userController.allowIfLoggedin,
+  userController.grantAccess("updateAny", "profile"),
+  userController.updateUser
+);
+
+router.delete(
+  "/user/:userId",
+  userController.allowIfLoggedin,
+  userController.grantAccess("deleteAny", "profile"),
+  userController.deleteUser
+);
 module.exports = router;
