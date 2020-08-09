@@ -48,7 +48,7 @@ app.use(async (req, res, next) => {
   }
 });
 
-app.use("/users", usersRouters);
+app.use("/api", usersRouters);
 app.use("/", indexRouters);
 
 app.listen(port, () => {
