@@ -49,6 +49,8 @@ app.use(async (req, res, next) => {
 });
 
 app.use("/users", usersRouters);
+app.use("/", indexRouters);
+
 app.listen(port, () => {
   console.log("Server is listening on Port:", port);
 });
