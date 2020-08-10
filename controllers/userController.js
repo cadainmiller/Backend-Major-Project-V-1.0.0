@@ -5,6 +5,10 @@ const { roles } = require("../roles");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+const Email = require("../email/config.email.js");
+
+require("dotenv").config();
+
 async function hashPassword(password) {
   return await bcrypt.hash(password, 10);
 }
@@ -15,10 +19,11 @@ async function validatePassword(plainPassword, hashedPassword) {
 
 exports.signup = async (req, res, next) => {
   try {
-    const { name, username, email, password, role } = req.body;
+    const { firstname, lastname, username, email, password, role } = req.body;
     const hashedPassword = await hashPassword(password);
     const newUser = new User({
-      name,
+      firstname,
+      lastname,
       username,
       email,
       password: hashedPassword,
@@ -37,6 +42,19 @@ exports.signup = async (req, res, next) => {
       data: newUser,
       accessToken,
     });
+    Email.SendEmail(
+      email,
+      "New User",
+      "<p>Hey " +
+        firstname +
+        "</p><p>Welcome to " +
+        process.env.COMPANY_NAME +
+        ".</p><p> You can use the link below to change your password from default </p><p>Username: " +
+        username +
+        "</p><p>Password: " +
+        password +
+        "</p><p> <a href='/localhost:4000/'>Change password</a></p>"
+    );
   } catch (error) {
     next(error);
   }
