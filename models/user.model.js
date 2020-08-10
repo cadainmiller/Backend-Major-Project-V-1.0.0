@@ -7,12 +7,12 @@ const userSchema = new Schema(
     firstname: {
       type: String,
       required: true,
-      minlength: 5,
+      minlength: 3,
     },
     lastname: {
       type: String,
       required: true,
-      minlength: 5,
+      minlength: 3,
     },
     username: {
       type: String,
