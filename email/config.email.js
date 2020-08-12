@@ -14,7 +14,7 @@ const SendEmail = (to, subject, body) => {
       },
     },
     mail: {
-      from: process.env.EMAIL_PASSWORD,
+      from: "Steve Milburn <no-reply@blog.com>",
       to: to,
       subject: subject,
       html: body,

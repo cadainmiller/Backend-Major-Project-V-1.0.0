@@ -4,6 +4,7 @@ const User = require("../models/user.model");
 const { roles } = require("../roles");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const emailBody = "email/welcome.email.html";
 
 const Email = require("../email/config.email.js");
 
@@ -44,7 +45,7 @@ exports.signup = async (req, res, next) => {
     });
     Email.SendEmail(
       email,
-      "New User",
+      "Welocme to Company ",
       "<p>Hey " +
         firstname +
         "</p><p>Welcome to " +
@@ -76,6 +77,9 @@ exports.login = async (req, res, next) => {
       accessToken,
     });
   } catch (error) {
+    res.status(302).json({
+      error,
+    });
     next(error);
   }
 };
