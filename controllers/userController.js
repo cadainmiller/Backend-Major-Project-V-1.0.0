@@ -7,6 +7,8 @@ const bcrypt = require("bcrypt");
 const emailBody = "email/welcome.email.html";
 
 const Email = require("../email/config.email.js");
+const refreshTokenSecret = process.env.JWT_SECRET_REFRESH;
+const refreshTokens = [];
 
 require("dotenv").config();
 
@@ -33,10 +35,14 @@ exports.signup = async (req, res, next) => {
     const accessToken = jwt.sign(
       { userId: newUser._id },
       process.env.JWT_SECRET,
+
       {
         expiresIn: "1d",
       }
     );
+
+    refreshTokens.push(refreshToken);
+
     newUser.accessToken = accessToken;
     await newUser.save();
     res.json({
@@ -71,10 +77,14 @@ exports.login = async (req, res, next) => {
     const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
+    const refreshToken = jwt.sign({ userId: user._id }, refreshTokenSecret);
+    refreshTokens.push(refreshToken);
+
     await User.findByIdAndUpdate(user._id, { accessToken });
     res.status(200).json({
       data: { email: user.email, role: user.role },
       accessToken,
+      refreshToken,
     });
   } catch (error) {
     res.status(302).json({
