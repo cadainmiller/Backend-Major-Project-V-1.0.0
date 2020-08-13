@@ -29,6 +29,11 @@ const userSchema = new Schema(
       required: true,
       minlength: 5,
     },
+    phonenumber: {
+      type: Number,
+      required: true,
+      minlength: 9,
+    },
     role: {
       type: String,
       default: "basic",

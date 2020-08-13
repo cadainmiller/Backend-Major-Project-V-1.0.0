@@ -22,11 +22,20 @@ async function validatePassword(plainPassword, hashedPassword) {
 
 exports.signup = async (req, res, next) => {
   try {
-    const { firstname, lastname, username, email, password, role } = req.body;
+    const {
+      firstname,
+      lastname,
+      username,
+      email,
+      phonenumber,
+      password,
+      role,
+    } = req.body;
     const hashedPassword = await hashPassword(password);
     const newUser = new User({
       firstname,
       lastname,
+      phonenumber,
       username,
       email,
       password: hashedPassword,
@@ -41,7 +50,7 @@ exports.signup = async (req, res, next) => {
       }
     );
 
-    refreshTokens.push(refreshToken);
+    // refreshTokens.push(refreshToken);
 
     newUser.accessToken = accessToken;
     await newUser.save();
